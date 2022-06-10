@@ -11,15 +11,13 @@ class StorageDatasource extends DataSource implements iDatasource
         return __('Storage');
     }
 
-    public static function getClass()
-    {
-        return __CLASS__;
-    }
+		public static function getClass() {
+			return __CLASS__;
+		}
 
-    public function getSource()
-    {
-        return self::getClass();
-    }
+		public function getSource() {
+			return self::getClass();
+		}
 
     public static function getTemplate()
     {
@@ -47,7 +45,7 @@ class StorageDatasource extends DataSource implements iDatasource
      *  The path to the Datasource file
      * @return string
      */
-    public function getSourceColumn($handle)
+    public static function getSourceColumn($handle)
     {
         return 'Storage';
     }
@@ -57,8 +55,11 @@ class StorageDatasource extends DataSource implements iDatasource
     -------------------------------------------------------------------------*/
 
     public static function buildEditor(XMLElement $wrapper, array &$errors = array(), array $settings = null, $handle = null)
-    {
-        $settings = $settings[self::getClass()];
+    {   
+    
+        $settings[self::getClass()] = $settings[self::getClass()] ?? null;
+        $settings['groups'] = $settings['groups'] ?? null;
+        $settings['params'] = $settings['params'] ?? null;
 
         $fieldset = new XMLElement('fieldset');
         $fieldset->setAttribute('class', 'settings contextual ' . __CLASS__);
@@ -67,6 +68,7 @@ class StorageDatasource extends DataSource implements iDatasource
 
         // Groups
         $label = new XMLElement('label', __('Filter by Groups') . '<i>' . __('Optional') . '</i>');
+        
         $input = Widget::Input('fields[' . self::getClass() . '][groups]', $settings['groups']);
         $label->appendChild($input);
         $fieldset->appendChild($label);
@@ -113,6 +115,7 @@ class StorageDatasource extends DataSource implements iDatasource
                 }
                 $string .= "\t\t\t'" . trim($group) . "'," . PHP_EOL;
             }
+            $string = $string ?? null;
             $template = str_replace('<!-- GROUPS -->', trim($string), $template);
         }
 
@@ -120,7 +123,7 @@ class StorageDatasource extends DataSource implements iDatasource
         return sprintf(
             $template,
             $params['rootelement'],
-            $settings['params']
+            $settings['params'] ?? null
         );
     }
 

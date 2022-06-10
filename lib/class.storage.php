@@ -51,7 +51,7 @@ class Storage
 
         // Return complete storage
         else {
-            return $_SESSION[$this->_index];
+            return $_SESSION[$this->_index] ?? null;
         }
     }
 
@@ -125,7 +125,8 @@ class Storage
      *  Return all existing groups as array
      */
     public function getGroups()
-    {
+    {   
+        $_SESSION[$this->_index] = $_SESSION[$this->_index] ?? null;
         if (is_array($_SESSION[$this->_index])) {
             return array_keys($_SESSION[$this->_index]);
         } else {
@@ -164,8 +165,10 @@ class Storage
                         unset($storage[$key]);
                     } else {
                         // The request value is an array, so drop the storage value if it's not.
-                        if (!is_array($storage[$key])) {
-                            $storage[$key] = null;
+                        if (isset($storage[$key])) {
+                          if (!is_array($storage[$key])) {
+                              $storage[$key] = null;
+                          }
                         }
                         $this->setStorage($storage[$key], $request_value, $recalculate);
                     }

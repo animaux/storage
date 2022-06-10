@@ -40,8 +40,8 @@ class eventstorage_action extends Event
     {
         $action_keys = is_array($_REQUEST['storage-action']) ? array_keys($_REQUEST['storage-action']) : array();
         $action = end($action_keys);
-
-        $drop_request = $_REQUEST['storage-action']['drop'];
+        
+        $drop_request = $_REQUEST['storage-action']['drop'] ?? null;
 
         $items = (array)$_REQUEST['storage'];
 
